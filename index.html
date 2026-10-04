@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NAILS STUDIO | Libreville</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;500&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+
+<div class="header">
+ <h2>NAILS STUDIO</h2>
+ <div><span onclick="showMy()" class="link">MES RDV</span><div class="cart" onclick="toggleCart()">RDV (<span id="count">0</span>)</div></div>
+</div>
+
+
+<section class="hero">
+ <p class="sub">— LOUIS • SUR RDV UNIQUEMENT</p>
+ <h1>Des ongles qui<br>parlent à ta place.</h1>
+ <p class="desc">Pose soignée, finition brillante, tenue 4 semaines. Pas de nail art d'enfant.</p>
+ <button class="btn-black" onclick="document.getElementById('grid').scrollIntoView({behavior:'smooth'})">Voir les poses</button>
+</section>
+
+
+<div class="grid" id="grid">
+<script>
+let nails=[
+["Baby Boomer Chic",18000,101,"Dégradé nude ultra naturel"],
+["French Rosé",15000,102,"French revisité rose poudré"],
+["Glazed Donut",20000,103,"Effet Hailey Bieber brillant"],
+["Amande Nude",17000,104,"Forme amande, couleur nude chic"],
+["Rouge Passion",16000,105,"Rouge profond, vernis gel"],
+["Paillettes Dorées",22000,106,"Base nude + paillettes or fin"],
+["Marbré Rose",21000,107,"Effet marbre rosé"],
+["Noir Intense",16000,108,"Noir laqué, forme carrée"],
+["Flower Minimal",23000,109,"Petites fleurs dessinées à la main"],
+["Chrome Rose",25000,110,"Chrome rose métallique tendance"]
+];
+document.write(nails.map(n=>`
+<div class="card">
+<div class="img-wrap"><img src="https://picsum.photos/400/500?random=${n[2]}"><div class="hover-desc">${n[3]}</div></div>
+<div class="card-info"><h3>${n[0]}</h3><p class="price">${n[1].toLocaleString()} FCFA</p><button class="btn-line" onclick="add('n[0]',{n[1]})">Réserver cette pose</button></div>
+</div>`).join(''));
+</script>
+</div>
+
+
+<section class="about"><div><h2>Le Studio</h2><p>Matériel stérilisé, vernis The Gel Bottle, café et musique douce. Une cliente à la fois. C'est pour ça que ça tient.</p><br><small><a href="#" onclick="alert('Confidentialité')">Confidentialité</a> | <a href="#" onclick="alert('Cookies: panier uniquement')">Cookies</a></small></div><div class="map"><iframe src="https://maps.google.com/maps?q=Libreville&t=&z=13&ie=UTF8&iwloc=&output=embed" width="100%" height="100%" style="border:0"></iframe></div></section>
+
+
+<div id="drawer"><h2>MA RÉSERVATION</h2><div id="items"></div><b id="tot"></b><br><br>
+<input type="date" id="d"><input type="time" id="t">
+<p class="acompte">Pour bloquer ta place, acompte 5.000F Airtel Money 07X + capture:</p><input type="file">
+<button class="btn-black full" onclick="order()">CONFIRMER SUR WHATSAPP</button>
+<button class="btn-close" onclick="toggleCart()">FERMER</button>
+</div>
+
+
+<div id="my"><div class="modal"><h3>MES RENDEZ-VOUS</h3><div id="my-list"></div><br><button class="btn-black" onclick="this.parentElement.parentElement.style.display='none'">Fermer</button></div></div>
+
+
+<script>
+let cart=[],total=0;
+function add(n,p){cart=[{n,p}];total=p;document.getElementById('count').innerText=1;render();toggleCart();}
+function render(){document.getElementById('items').innerHTML=cart.map(c=>`<p>${c.n} - ${c.p} FCFA</p>`).join('');document.getElementById('tot').innerText='TOTAL: '+total+' FCFA'}
+function toggleCart(){document.getElementById('drawer').classList.toggle('open')}
+function order(){
+ let date=document.getElementById('d').value,time=document.getElementById('t').value;
+ if(!date||!time)return alert('Choisis date et heure ma belle');
+ let msg=`NAILS STUDIO - NOUVELLE POSE:%0A${cart[0].n}%0ADate: ${date} ${time}%0ATotal: ${total} FCFA`;
+ let a=JSON.parse(localStorage.getItem('nails_admin')||'[]');a.push({date,time,total,cart,status:'PENDIENTE'});localStorage.setItem('nails_admin',JSON.stringify(a));
+ let r=JSON.parse(localStorage.getItem('nails_res')||'[]');r.push({date,time,total,pose:cart[0].n});localStorage.setItem('nails_res',JSON.stringify(r));
+ window.open('https://wa.me/241077000000?text='+msg);
+ document.getElementById('drawer').classList.remove('open');
+}
+function showMy(){document.getElementById('my').style.display='block';let r=JSON.parse(localStorage.getItem('nails_res')||'[]');document.getElementById('my-list').innerHTML=r.map(x=>`<p class=res-line>${x.date} ${x.time} - ${x.pose} - ${x.total}F</p>`).join('')||'Aucun RDV';}
+</script>
+</body>
+</html>
