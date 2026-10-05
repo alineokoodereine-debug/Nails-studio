@@ -42,7 +42,7 @@
 <section class="galeria" id="galeria">
  <h2 class="sec-title">Galerie de Manucures</h2>
  <p class="sec-sub">Inspiration • Détail • Sophistication</p>
- <div class="galeria-grid">
+ <div class="galeria-grid" id="galeria-grid">
  <div class="g-card"><div class="g-img"><img src="nail1.jpg"></div><h4>Manucure Arche Dorée</h4><small>Vernis nude • Détail en or</small><p class="price">18.000 FCFA</p><button onclick="add('Arche Dorée',18000)">Ajouter</button></div>
  <div class="g-card"><div class="g-img"><img src="nail2.jpg"></div><h4>Design Goutte Rose</h4><small>Rose poudré • Nail art minimal</small><p class="price">20.000 FCFA</p><button onclick="add('Goutte Rose',20000)">Ajouter</button></div>
  <div class="g-card"><div class="g-img"><img src="nail3.jpg"></div><h4>Luxury Black & Gold</h4><small>Finition noire • Détails dorés</small><p class="price">22.000 FCFA</p><button onclick="add('Black & Gold',22000)">Ajouter</button></div>
@@ -75,10 +75,37 @@
  <div class="copy">© 2026 BELLA ÉCLAT — Tous droits réservés.</div>
 </footer>
 
-<div id="drawer"><h2>MA RÉSERVATION</h2><div id="items"></div><b id="tot"></b><br><br><input type="date" id="d"><input type="time" id="t"><p class="acompte">Acompte 5.000F Airtel Money 07X + capture:</p><input type="file"><button class="btn-black full" onclick="order()">CONFIRMER SUR WHATSAPP</button><button class="btn-close" onclick="toggleCart()">FERMER</button></div>
+<div id="drawer"><h2>MA RÉSERVATION</h2><div id="items"></div><b id="tot"></b><br><br><input type="date" id="d"><input type="time" id="t">
+<p class="acompte">Acompte 5.000F Airtel Money 07X. Après confirmation, envoie ta capture + photo de tes ongles actuels directement dans le chat WhatsApp 📸</p>
+<button class="btn-black full" onclick="order()">CONFIRMER SUR WHATSAPP</button><button class="btn-close" onclick="toggleCart()">FERMER</button></div>
 <div id="my"><div class="modal"><h3>MES RENDEZ-VOUS</h3><div id="my-list"></div><br><button class="btn-black" onclick="this.parentElement.parentElement.style.display='none'">Fermer</button></div></div>
 
 <script>
+// ===== GOOGLE SHEET PRECIOS =====
+const SHEET_ID = "1AQUI_VA_EL_ID_DE_TU_SHEET_BELLA";
+fetch(`https://opensheet.elk.sh/${SHEET_ID}/1`)
+  .then(r => r.json())
+  .then(data => {
+    console.log("Precios Sheet:", data);
+    // data = [{id, nom, prix, photo_url, disponible, description}, ...]
+    data.forEach((s, i) => {
+      const cards = document.querySelectorAll('#galeria-grid .g-card');
+      if(cards[i]){
+        if(s.disponible.toLowerCase() !== 'non' && s.disponible.toLowerCase() !== 'no'){
+          cards[i].querySelector('h4').innerText = s.nom;
+          cards[i].querySelector('.price').innerText = s.prix + ' FCFA';
+          // Actualiza el boton para que lleve el precio nuevo
+          cards[i].querySelector('button').setAttribute('onclick', `add('${s.nom.replace(/'/g,"\\'")}', ${parseInt(s.prix)})`);
+        } else {
+          cards[i].style.opacity = '0.3';
+          cards[i].querySelector('button').innerText = 'Indisponible';
+          cards[i].querySelector('button').disabled = true;
+        }
+      }
+    });
+  })
+  .catch(err => console.log("Sheet no publicado aún, usando precios por defecto", err));
+
 let cart=[], tot=0;
 function add(n,p){
  cart.push({n,p});
@@ -95,7 +122,8 @@ function toggleCart(){document.getElementById('drawer').classList.toggle('open')
 function order(){
  let date=document.getElementById('d').value, time=document.getElementById('t').value;
  if(!date||!time) return alert('Choisis date et heure');
- let msg=`BELLA ECLAT - NOUVELLE POSE:%0A${cart.map(c=>'- '+c.n).join('%0A')}%0ADate: ${date} ${time}%0ATotal: ${tot} FCFA`;
+ if(cart.length===0) return alert('Ajoute une pose d\'abord');
+ let msg=`BELLA ECLAT - NOUVELLE POSE:%0A${cart.map(c=>'- '+c.n+' (${c.p}F)').join('%0A')}%0ADate: ${date} ${time}%0ATotal: ${tot} FCFA%0A%0A👉 N'oublie pas d'envoyer la photo de tes ongles + capture ici 📸`;
  let a=JSON.parse(localStorage.getItem('nails_admin')||'[]'); a.push({date,time,tot,cart,status:'PENDIENTE'}); localStorage.setItem('nails_admin',JSON.stringify(a));
  let r=JSON.parse(localStorage.getItem('nails_res')||'[]'); r.push({date,time,tot,pose:cart.map(c=>c.n).join(', ')}); localStorage.setItem('nails_res',JSON.stringify(r));
  window.open('https://wa.me/24162516457?text='+msg,'_blank');
