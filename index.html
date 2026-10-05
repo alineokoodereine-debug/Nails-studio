@@ -3,78 +3,105 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NAILS STUDIO | Libreville</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;500&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Inter:wght@300;400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-
 <div class="header">
- <h2>NAILS STUDIO</h2>
- <div><span onclick="showMy()" class="link">MES RDV</span><div class="cart" onclick="toggleCart()">RDV (<span id="count">0</span>)</div></div>
+  <div class="logo-wrap">
+    <img src="logo.png" class="logo-img" alt="logo">
+    <h2>BELLA ÉCLAT</h2>
+  </div>
+  <nav class="nav">
+    <a href="#hero">Inicio</a> • <a href="#galeria">Galería</a> • <a href="#servicios">Servicios</a> • <a href="#about">Nosotros</a>
+  </nav>
+  <div class="header-right">
+    <span onclick="showMy()" class="link-rdv">MES RDV</span>
+    <div class="cart-pill" onclick="toggleCart()">RDV (<span id="count">0</span>)</div>
+  </div>
 </div>
 
-
-<section class="hero">
- <p class="sub">— LOUIS • SUR RDV UNIQUEMENT</p>
- <h1>Des ongles qui<br>parlent à ta place.</h1>
- <p class="desc">Pose soignée, finition brillante, tenue 4 semaines. Pas de nail art d'enfant.</p>
- <button class="btn-black" onclick="document.getElementById('grid').scrollIntoView({behavior:'smooth'})">Voir les poses</button>
+<section class="hero" id="hero">
+  <div class="hero-text">
+    <h1>Arte en tus uñas.<br><span class="italic">Lujo en cada detalle.</span></h1>
+    <p>Manicura y esmaltado de autor, diseño personalizado en tonos rosa empolvado & dorado. Experiencia boutique para realzar tu estilo con detalle y sofisticación.</p>
+    <div class="hero-btns">
+      <button class="btn-black" onclick="toggleCart()">Reservar cita</button>
+      <button class="btn-pink" onclick="document.getElementById('galeria').scrollIntoView({behavior:'smooth'})">Ver servicios</button>
+    </div>
+    <div class="hero-tags"><span>• Materiales veganos</span><span>• Atención personalizada</span><span>• Productos de lujo</span></div>
+  </div>
+  <div class="hero-blobs">
+    <div class="blob b1"><img src="nail-hero1.jpg"></div>
+    <div class="blob b2"><img src="nail-hero2.jpg"></div>
+    <div class="blob b3"><img src="nail-hero3.jpg"></div>
+  </div>
 </section>
 
+<section class="galeria" id="galeria">
+  <h2 class="sec-title">Galería de Manicuras</h2>
+  <p class="sec-sub">Inspiración. Detalle. Sofisticación.</p>
+  <div class="galeria-grid">
+    <div class="g-card"><div class="g-img"><img src="nail1.jpg"></div><h4>Manicura Arco Dorado</h4><small>Esmaltado nude • Detalle en oro</small><p class="price">18.000 FCFA</p><button onclick="add('Arco Dorado',18000)">Ajouter</button></div>
+    <div class="g-card"><div class="g-img"><img src="nail2.jpg"></div><h4>Diseño Gota Rosa</h4><small>Rosa empolvado • Nail art minimal</small><p class="price">20.000 FCFA</p><button onclick="add('Gota Rosa',20000)">Ajouter</button></div>
+    <div class="g-card"><div class="g-img"><img src="nail3.jpg"></div><h4>Luxury Black & Gold</h4><small>Acabado negro • Detalles dorados</small><p class="price">22.000 FCFA</p><button onclick="add('Black & Gold',22000)">Ajouter</button></div>
+    <div class="g-card"><div class="g-img"><img src="nail4.jpg"></div><h4>Baby Boomer Chic</h4><small>Dégradé nude ultra naturel</small><p class="price">18.000 FCFA</p><button onclick="add('Baby Boomer',18000)">Ajouter</button></div>
+    <div class="g-card"><div class="g-img"><img src="nail5.jpg"></div><h4>Glazed Donut</h4><small>Effet Hailey Bieber brillant</small><p class="price">20.000 FCFA</p><button onclick="add('Glazed Donut',20000)">Ajouter</button></div>
+    <div class="g-card"><div class="g-img"><img src="nail6.jpg"></div><h4>Chrome Rose</h4><small>Chrome métallique tendance</small><p class="price">25.000 FCFA</p><button onclick="add('Chrome Rose',25000)">Ajouter</button></div>
+  </div>
+</section>
 
-<div class="grid" id="grid">
-<script>
-let nails=[
-["Baby Boomer Chic",18000,101,"Dégradé nude ultra naturel"],
-["French Rosé",15000,102,"French revisité rose poudré"],
-["Glazed Donut",20000,103,"Effet Hailey Bieber brillant"],
-["Amande Nude",17000,104,"Forme amande, couleur nude chic"],
-["Rouge Passion",16000,105,"Rouge profond, vernis gel"],
-["Paillettes Dorées",22000,106,"Base nude + paillettes or fin"],
-["Marbré Rose",21000,107,"Effet marbre rosé"],
-["Noir Intense",16000,108,"Noir laqué, forme carrée"],
-["Flower Minimal",23000,109,"Petites fleurs dessinées à la main"],
-["Chrome Rose",25000,110,"Chrome rose métallique tendance"]
-];
-document.write(nails.map(n=>`
-<div class="card">
-<div class="img-wrap"><img src="https://picsum.photos/400/500?random=${n[2]}"><div class="hover-desc">${n[3]}</div></div>
-<div class="card-info"><h3>${n[0]}</h3><p class="price">${n[1].toLocaleString()} FCFA</p><button class="btn-line" onclick="add('n[0]',{n[1]})">Réserver cette pose</button></div>
-</div>`).join(''));
-</script>
-</div>
+<section class="servicios" id="servicios">
+  <h2 class="sec-title">Servicios Exclusivos</h2>
+  <div class="serv-grid">
+    <div class="serv-box"><h3>Manicura Rusa</h3><p>Cuidado preciso, acabado impecable. Duración prolongada.</p></div>
+    <div class="serv-box"><h3>Nail Art en Oro</h3><p>Diseños artísticos personalizados con detalles en oro 24k.</p></div>
+    <div class="serv-box"><h3>Spa de Manos Luxury</h3><p>Tratamiento hidratante, exfoliación y masaje relajante.</p></div>
+  </div>
+</section>
 
+<section class="about" id="about">
+  <div class="about-img"><img src="about-nails.jpg"></div>
+  <div class="about-text"><h2>Le Studio</h2><p>Matériel stérilisé, vernis The Gel Bottle, café y música dulce. Una cliente a la vez. C'est pour ça que ça tient 4 semaines.</p><p style="margin-top:15px">📍 Louis, Libreville • Sur RDV</p><div class="mapa"><iframe src="https://maps.google.com/maps?q=Libreville&t=&z=13&ie=UTF8&iwloc=&output=embed" width="100%" height="100%" style="border:0;border-radius:15px"></iframe></div></div>
+</section>
 
-<section class="about"><div><h2>Le Studio</h2><p>Matériel stérilisé, vernis The Gel Bottle, café et musique douce. Une cliente à la fois. C'est pour ça que ça tient.</p><br><small><a href="#" onclick="alert('Confidentialité')">Confidentialité</a> | <a href="#" onclick="alert('Cookies: panier uniquement')">Cookies</a></small></div><div class="map"><iframe src="https://maps.google.com/maps?q=Libreville&t=&z=13&ie=UTF8&iwloc=&output=embed" width="100%" height="100%" style="border:0"></iframe></div></section>
+<footer>
+  <div class="foot-grid">
+    <div><h3>BELLA ÉCLAT</h3><small>Salón de uñas boutique • Libreville</small><div class="socials"><a href="https://instagram.com/" target="_blank">Instagram</a> • <a href="https://facebook.com/" target="_blank">Facebook</a></div></div>
+    <div><b>HORARIOS</b><br><small>Lun - Sáb: 10:00 - 19:00<br>Dom: Cerrado</small></div>
+    <div><b>CONTACTO</b><br><small>hola@bellaeclat.com<br>+241 62 51 64 57</small><br><a href="#" onclick="alert('Confidentialité')">Confidentialité</a> | <a href="#" onclick="alert('Cookies')">Cookies</a></div>
+  </div>
+  <div class="copy">© 2026 BELLA ÉCLAT — Tous droits réservés.</div>
+</footer>
 
-
-<div id="drawer"><h2>MA RÉSERVATION</h2><div id="items"></div><b id="tot"></b><br><br>
-<input type="date" id="d"><input type="time" id="t">
-<p class="acompte">Pour bloquer ta place, acompte 5.000F Airtel Money 07X + capture:</p><input type="file">
-<button class="btn-black full" onclick="order()">CONFIRMER SUR WHATSAPP</button>
-<button class="btn-close" onclick="toggleCart()">FERMER</button>
-</div>
-
-
+<div id="drawer"><h2>MA RÉSERVATION</h2><div id="items"></div><b id="tot"></b><br><br><input type="date" id="d"><input type="time" id="t"><p class="acompte">Acompte 5.000F Airtel Money 07X + capture:</p><input type="file"><button class="btn-black full" onclick="order()">CONFIRMER SUR WHATSAPP</button><button class="btn-close" onclick="toggleCart()">FERMER</button></div>
 <div id="my"><div class="modal"><h3>MES RENDEZ-VOUS</h3><div id="my-list"></div><br><button class="btn-black" onclick="this.parentElement.parentElement.style.display='none'">Fermer</button></div></div>
 
-
 <script>
-let cart=[],total=0;
-function add(n,p){cart=[{n,p}];total=p;document.getElementById('count').innerText=1;render();toggleCart();}
-function render(){document.getElementById('items').innerHTML=cart.map(c=>`<p>${c.n} - ${c.p} FCFA</p>`).join('');document.getElementById('tot').innerText='TOTAL: '+total+' FCFA'}
+let cart=[], tot=0;
+function add(n,p){
+  cart.push({n,p});
+  tot+=p;
+  document.getElementById('count').innerText=cart.length;
+  render();
+}
+function render(){
+  let h=''; cart.forEach(c=> h+=`<p>${c.n} - ${c.p} FCFA</p>`);
+  document.getElementById('items').innerHTML=h;
+  document.getElementById('tot').innerText='TOTAL: '+tot+' FCFA';
+}
 function toggleCart(){document.getElementById('drawer').classList.toggle('open')}
 function order(){
- let date=document.getElementById('d').value,time=document.getElementById('t').value;
- if(!date||!time)return alert('Choisis date et heure ma belle');
- let msg=`NAILS STUDIO - NOUVELLE POSE:%0A${cart[0].n}%0ADate: ${date} ${time}%0ATotal: ${total} FCFA`;
- let a=JSON.parse(localStorage.getItem('nails_admin')||'[]');a.push({date,time,total,cart,status:'PENDIENTE'});localStorage.setItem('nails_admin',JSON.stringify(a));
- let r=JSON.parse(localStorage.getItem('nails_res')||'[]');r.push({date,time,total,pose:cart[0].n});localStorage.setItem('nails_res',JSON.stringify(r));
- window.open('https://wa.me/241077000000?text='+msg);
- document.getElementById('drawer').classList.remove('open');
+  let date=document.getElementById('d').value, time=document.getElementById('t').value;
+  if(!date||!time) return alert('Choisis date et heure');
+  let msg=`BELLA ECLAT - NOUVELLE POSE:%0A${cart.map(c=>'- '+c.n).join('%0A')}%0ADate: ${date} ${time}%0ATotal: ${tot} FCFA`;
+  let a=JSON.parse(localStorage.getItem('nails_admin')||'[]'); a.push({date,time,tot,cart,status:'PENDIENTE'}); localStorage.setItem('nails_admin',JSON.stringify(a));
+  let r=JSON.parse(localStorage.getItem('nails_res')||'[]'); r.push({date,time,tot,pose:cart.map(c=>c.n).join(', ')}); localStorage.setItem('nails_res',JSON.stringify(r));
+  window.open('https://wa.me/24162516457?text='+msg,'_blank');
+  cart=[]; tot=0; document.getElementById('count').innerText='0'; render(); toggleCart(); showMy();
 }
-function showMy(){document.getElementById('my').style.display='block';let r=JSON.parse(localStorage.getItem('nails_res')||'[]');document.getElementById('my-list').innerHTML=r.map(x=>`<p class=res-line>${x.date} ${x.time} - ${x.pose} - ${x.total}F</p>`).join('')||'Aucun RDV';}
+function showMy(){document.getElementById('my').style.display='block'; let r=JSON.parse(localStorage.getItem('nails_res')||'[]'); document.getElementById('my-list').innerHTML=r.map(x=>`<p class=res-line>${x.date} ${x.time} - ${x.pose} - ${x.tot}F</p>`).join('')||'Aucun RDV';}
 </script>
 </body>
 </html>
