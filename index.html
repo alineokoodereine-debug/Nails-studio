@@ -81,21 +81,19 @@
 <div id="my"><div class="modal"><h3>MES RENDEZ-VOUS</h3><div id="my-list"></div><br><button class="btn-black" onclick="this.parentElement.parentElement.style.display='none'">Fermer</button></div></div>
 
 <script>
-// ===== GOOGLE SHEET PRECIOS =====
-const SHEET_ID = "1AQUI_VA_EL_ID_DE_TU_SHEET_BELLA";
+// ===== GOOGLE SHEET PRECIOS - BELLA ECLAT =====
+const SHEET_ID = "1WVDHk6-QhN7-MvQGdqq1XpuPrwaEkyawovtI_JsfS-s";
 fetch(`https://opensheet.elk.sh/${SHEET_ID}/1`)
   .then(r => r.json())
   .then(data => {
     console.log("Precios Sheet:", data);
-    // data = [{id, nom, prix, photo_url, disponible, description}, ...]
     data.forEach((s, i) => {
       const cards = document.querySelectorAll('#galeria-grid .g-card');
       if(cards[i]){
-        if(s.disponible.toLowerCase() !== 'non' && s.disponible.toLowerCase() !== 'no'){
-          cards[i].querySelector('h4').innerText = s.nom;
-          cards[i].querySelector('.price').innerText = s.prix + ' FCFA';
-          // Actualiza el boton para que lleve el precio nuevo
-          cards[i].querySelector('button').setAttribute('onclick', `add('${s.nom.replace(/'/g,"\\'")}', ${parseInt(s.prix)})`);
+        if(String(s.Disponible).toLowerCase() !== 'non' && String(s.Disponible).toLowerCase() !== 'no' && String(s.Disponible).toLowerCase() !== 'false'){
+          cards[i].querySelector('h4').innerText = s.Nom;
+          cards[i].querySelector('.price').innerText = s.Prix + ' FCFA';
+          cards[i].querySelector('button').setAttribute('onclick', `add('${String(s.Nom).replace(/'/g,"\\'")}', ${parseInt(s.Prix)})`);
         } else {
           cards[i].style.opacity = '0.3';
           cards[i].querySelector('button').innerText = 'Indisponible';
@@ -104,20 +102,11 @@ fetch(`https://opensheet.elk.sh/${SHEET_ID}/1`)
       }
     });
   })
-  .catch(err => console.log("Sheet no publicado aún, usando precios por defecto", err));
+  .catch(err => console.log("Sheet no publicado aún", err));
 
 let cart=[], tot=0;
-function add(n,p){
- cart.push({n,p});
- tot+=p;
- document.getElementById('count').innerText=cart.length;
- render();
-}
-function render(){
- let h=''; cart.forEach(c=> h+=`<p>${c.n} - ${c.p} FCFA</p>`);
- document.getElementById('items').innerHTML=h;
- document.getElementById('tot').innerText='TOTAL: '+tot+' FCFA';
-}
+function add(n,p){ cart.push({n,p}); tot+=p; document.getElementById('count').innerText=cart.length; render(); }
+function render(){ let h=''; cart.forEach(c=> h+=`<p>${c.n} - ${c.p} FCFA</p>`); document.getElementById('items').innerHTML=h; document.getElementById('tot').innerText='TOTAL: '+tot+' FCFA'; }
 function toggleCart(){document.getElementById('drawer').classList.toggle('open')}
 function order(){
  let date=document.getElementById('d').value, time=document.getElementById('t').value;
